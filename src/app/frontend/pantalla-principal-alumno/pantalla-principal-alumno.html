@@ -1,0 +1,86 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Pantalla Principal - Alumno</title>
+    <link rel="stylesheet" href="SolicitarAsesoriaAlumno.css">
+
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+    <script src="SolicitarAsesoriaALumno.js" defer></script>
+
+</head>
+<body>
+
+    <div class="contenedor-principal">
+
+        <!-- Menú lateral izquierdo -->
+        <aside class="menu-lateral">
+            <ul class="menu-opciones">
+                <li id="btn-carrera"><strong>Carrera</strong></li>
+                <ul id="lista-carrera" style="display:none;"></ul>
+
+                <li id="btn-basicas"><strong>Ciencias Básicas</strong></li>
+                <ul id="lista-basicas" style="display:none;"></ul>
+
+                <li id="btn-administrativas"><strong>Ciencias Administrativas</strong></li>
+                <ul id="lista-administrativas" style="display:none;"></ul>
+            </ul>
+        </aside>
+
+
+
+        <!-- Contenido central -->
+        <main class="contenido">
+
+            <div class="titulo">
+                <h1>Pantalla Principal del Alumno</h1>
+            </div>
+
+            <!-- Horario -->
+            <div class="horario">
+                <p>Horario del alumno</p>
+
+                <table>
+                    <tr>
+                        <th>Hora</th>
+                        <th>Lun</th>
+                        <th>Mar</th>
+                        <th>Mié</th>
+                        <th>Jue</th>
+                        <th>Vie</th>
+                    </tr>
+
+                    <tr>
+                        <td>07:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>08:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+
+            <button class="btn-solicitar">
+                Solicitar asesoría
+            </button>
+
+        </main>
+
+        <!-- Panel derecho -->
+        <aside class="panel-derecho">
+        </aside>
+
+    </div>
+
+</body>
+</html>
