@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión - Alumno</title>
+    <link rel="stylesheet" href="StyleInicioSesionAlumno.css">
+    <script src="InicioDeSesionALumno.js" defer></script>
+</head>
+<body>
+    <app-root></app-root>
+<header class="BarraSuperior">
+    <img src="../frontend/recursos/GobiernoDeMExico.png" alt="Gobierno de México" class="logo">
+</header>
+
+<main class="login-main">
+
+    <div class="login-image">
+        <div class="image-title">
+            Control de asesorías alumno
+        </div>
+    </div>
+
+    <div class="login-right">
+        <div class="login-container">
+
+            <div class="login-title">
+                Iniciar Sesión Alumno
+            </div>
+
+            <form id="login-alumno">
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <input type="text" id="usuario" placeholder="usuario" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="password" placeholder="password" required>
+                </div>
+
+                <button type="submit">Entrar</button>
+            </form>
+
+
+            <a href="CambioContraseañaAlumno.html" class="login-link">¿Olvidaste tu contraseña?</a>
+
+        </div>
+    </div>
+
+</main>
+</body>
+</html>
