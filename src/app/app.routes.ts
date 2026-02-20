@@ -1,7 +1,10 @@
 import { Routes } from '@angular/router';
-import { InicioDeSesionAlumnoComponent } from './inicio-de-sesion-alumno/InicioDeSesionAlumno.component';
+import { InicioDeSesionAlumnoComponent } from './frontend/inicio-de-sesion-alumno/inicio-de-sesion-alumno';
+import { CambioDePasswordAlumnoComponent } from './frontend/cambio-de-password-alumno/cambio-de-password-alumno';
 
 export const routes: Routes = [
-  { path: '', component: InicioDeSesionAlumnoComponent }
+  { path: '', component: InicioDeSesionAlumnoComponent },
+  { path: 'inicio-de-sesion', component: InicioDeSesionAlumnoComponent },
+  { path: 'cambio-password', component: CambioDePasswordAlumnoComponent }
 ];
 
