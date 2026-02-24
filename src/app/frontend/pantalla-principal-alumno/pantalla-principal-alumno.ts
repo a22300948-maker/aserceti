@@ -1,114 +1,100 @@
-  import { Component, OnInit } from '@angular/core';
-  import { RouterModule } from '@angular/router';
-  import { HttpClient } from '@angular/common/http';
-  import { HttpClientModule } from '@angular/common/http';
-  import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
-  @Component({
-    selector: 'app-pantalla-principal-alumno',
-    standalone: true,
-    imports: [RouterModule, HttpClientModule, CommonModule],
-    styleUrls: ['./pantalla-principal-alumno.css'],
-    templateUrl: './pantalla-principal-alumno.html',
-  })
-  export class PantallaPrincipalAlumno implements OnInit {
+@Component({
+  selector: 'app-pantalla-principal-alumno',
+  standalone: true,
+  imports: [RouterModule, CommonModule],
+  styleUrls: ['./pantalla-principal-alumno.css'],
+  templateUrl: './pantalla-principal-alumno.html'
+})
+export class PantallaPrincipalAlumno implements OnInit {
 
-    materiasBasicas: any[] = [];
-    materiasAdministrativas: any[] = [];
-    materiasCarrera: any[] = [];
-    alumno: any;
-    asesores: any[] = [];
-    materias: any[] = [];
-    horarios: any[] = [];
-    
-    materiaSeleccionada: any = null;
-    asesorSeleccionado: any = null;
+  materiasBasicas: any[] = [];
+  materiasAdministrativas: any[] = [];
+  materiasCarrera: any[] = [];
 
-    constructor(private http: HttpClient) { }
+  alumno: any;
 
-    ngOnInit() {
-      const usuarioGuardado = localStorage.getItem('usuario');
-      console.log("Datos guardados en localStorage:", usuarioGuardado);
+  asesores: any[] = [];
+  horarios: any[] = [];
 
-      if (usuarioGuardado) {
-        const datosParseados = JSON.parse(usuarioGuardado);
-        console.log("Datos parseados:", datosParseados);
+  materiaSeleccionada: any = null;
+  asesorSeleccionado: any = null;
 
-        // Si se guardó como {success: true, usuario: {...}}
-        if (datosParseados.usuario) {
-          this.alumno = datosParseados.usuario;
-        } 
-        // Si se guardó como {...} directamente
-        else {
-          this.alumno = datosParseados;
-        }
+  constructor(private http: HttpClient) {}
 
-        console.log("Alumno final:", this.alumno);
-        console.log("ID Usuario:", this.alumno?.id_usuario);
+  ngOnInit(): void {
+    const usuarioGuardado = localStorage.getItem('usuario');
 
-        if (this.alumno?.id_usuario) {
-          this.cargarMaterias();
-        } else {
-          console.error("El alumno no tiene id_usuario");
-        }
-      } else {
-        console.error("No hay usuario guardado en localStorage");
+    if (!usuarioGuardado) {
+      console.error("No hay usuario en localStorage");
+      return;
+    }
+
+    this.alumno = JSON.parse(usuarioGuardado);
+
+    console.log("Alumno cargado:", this.alumno);
+  }
+
+  // 🔥 Ahora SOLO se ejecuta cuando das click en "Ver mis materias"
+  cargarMaterias(): void {
+
+    if (!this.alumno?.id_usuario) {
+      console.error("No existe id_usuario");
+      return;
+    }
+
+    const url = `http://localhost:3000/api/auth/materias/${this.alumno.id_usuario}`;
+    console.log("Consultando:", url);
+
+    this.http.get<any>(url).subscribe({
+      next: (response) => {
+        console.log("Respuesta materias:", response);
+
+        this.materiasBasicas = response.basicas || [];
+        this.materiasAdministrativas = response.administrativas || [];
+        this.materiasCarrera = response.carrera || [];
+      },
+      error: (error) => {
+        console.error("Error al cargar materias:", error);
       }
-    }
-    
-    cargarMaterias() {
-      const url = `http://localhost:3000/api/auth/materias/${this.alumno.id_usuario}`;
-      console.log("URL enviada:", url);
+    });
+  }
 
-      this.http.get<any>(url)
-        .subscribe({
-          next: (response) => {
-            console.log("Respuesta completa:", response);
-
-            // Asignar directamente sin verificar success
-            this.materiasBasicas = response.basicas || [];
-            this.materiasAdministrativas = response.administrativas || [];
-            this.materiasCarrera = response.carrera || [];
-            
-            console.log("Materias Básicas:", this.materiasBasicas);
-            console.log("Materias Administrativas:", this.materiasAdministrativas);
-            console.log("Materias Carrera:", this.materiasCarrera);
-
-            // Forzar detección de cambios
-          },
-          error: (error) => {
-            console.error("Error al cargar materias:", error);
-          }
-        });
-    }
-    seleccionarMateria(materia: any) {
+  seleccionarMateria(materia: any): void {
     this.materiaSeleccionada = materia;
     this.asesorSeleccionado = null;
+    this.horarios = [];
 
-    this.http.get<any>(`http://localhost:3000/api/auth/asesores/${materia.id_materia}`)
-      .subscribe({
-        next: (res) => {
-          this.asesores = res || [];
-          console.log("Asesores:", this.asesores);
-        },
-        error: (error) => {
-          console.error("Error al cargar asesores:", error);
-        }
-      });
+    const url = `http://localhost:3000/api/auth/asesores/${materia.id_materia}`;
+
+    this.http.get<any>(url).subscribe({
+      next: (res) => {
+        this.asesores = res || [];
+        console.log("Asesores:", this.asesores);
+      },
+      error: (error) => {
+        console.error("Error al cargar asesores:", error);
+      }
+    });
   }
 
-  seleccionarAsesor(asesor: any) {
+  seleccionarAsesor(asesor: any): void {
     this.asesorSeleccionado = asesor;
 
-    this.http.get<any>(`http://localhost:3000/api/auth/horarios/${asesor.IdAse}`)
-      .subscribe({
-        next: (res) => {
-          this.horarios = res || [];
-          console.log("Horarios:", this.horarios);
-        },
-        error: (error) => {
-          console.error("Error al cargar horarios:", error);
-        }
-      });
+    const url = `http://localhost:3000/api/auth/horarios/${asesor.IdAse}`;
+
+    this.http.get<any>(url).subscribe({
+      next: (res) => {
+        this.horarios = res || [];
+        console.log("Horarios:", this.horarios);
+      },
+      error: (error) => {
+        console.error("Error al cargar horarios:", error);
+      }
+    });
   }
-  }
+}
