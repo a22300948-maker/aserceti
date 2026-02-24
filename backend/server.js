@@ -19,7 +19,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-const authController = require('./controllers/auth.controller');
+
 const authRoutes = require('./routes/auth.routes');
 
 (async () => {

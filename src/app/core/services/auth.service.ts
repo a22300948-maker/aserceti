@@ -10,8 +10,12 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
- login(data: any) {
+  login(data: any) {
   console.log("Enviando al backend:", data);
   return this.http.post(`${this.apiUrl}/login`, data);
+}
+  CambioPassword(data: any) {
+  console.log("Enviando al backend para cambio de contraseña:", data);
+  return this.http.post(`${this.apiUrl}/CambioPassword`, data);
 }
 }

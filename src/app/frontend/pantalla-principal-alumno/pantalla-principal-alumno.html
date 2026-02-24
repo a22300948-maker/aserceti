@@ -1,86 +1,93 @@
-<head>
-    <meta charset="UTF-8">
-    <title>Pantalla Principal - Alumno</title>
-    <link rel="stylesheet" href="SolicitarAsesoriaAlumno.css">
+<div class="contenedor-principal">
 
-    <!-- Fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-
-    <script src="SolicitarAsesoriaALumno.js" defer></script>
-
-</head>
-<body>
-
-    <div class="contenedor-principal">
-
-        <!-- Menú lateral izquierdo -->
-        <aside class="menu-lateral">
-            <ul class="menu-opciones">
-                <li id="btn-carrera"><strong>Carrera</strong></li>
-                <ul id="lista-carrera" style="display:none;"></ul>
-
-                <li id="btn-basicas"><strong>Ciencias Básicas</strong></li>
-                <ul id="lista-basicas" style="display:none;"></ul>
-
-                <li id="btn-administrativas"><strong>Ciencias Administrativas</strong></li>
-                <ul id="lista-administrativas" style="display:none;"></ul>
-            </ul>
-        </aside>
-
-
-
-        <!-- Contenido central -->
-        <main class="contenido">
-
-            <div class="titulo">
-                <h1>Pantalla Principal del Alumno</h1>
-            </div>
-
-            <!-- Horario -->
-            <div class="horario">
-                <p>Horario del alumno</p>
-
-                <table>
-                    <tr>
-                        <th>Hora</th>
-                        <th>Lun</th>
-                        <th>Mar</th>
-                        <th>Mié</th>
-                        <th>Jue</th>
-                        <th>Vie</th>
-                    </tr>
-
-                    <tr>
-                        <td>07:00</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-
-                    <tr>
-                        <td>08:00</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
-            </div>
-
-            <button class="btn-solicitar">
-                Solicitar asesoría
-            </button>
-
-        </main>
-
-        <!-- Panel derecho -->
-        <aside class="panel-derecho">
-        </aside>
-
+  <!-- MENÚ LATERAL -->
+  <div class="menu-lateral">
+    <div class="perfil">
+      <h3>{{ alumno?.nombre }}</h3>
+      <p>{{ alumno?.correo }}</p>
     </div>
 
-</body>
-</html>
+    <ul class="menu-opciones">
+
+      <!-- CIENCIAS BÁSICAS -->
+      <li style="background:#444; font-weight:bold;">Ciencias Básicas</li>
+      <li *ngFor="let materia of materiasBasicas"
+          (click)="seleccionarMateria(materia)"
+          style="cursor:pointer">
+        {{ materia.nombre }}
+      </li>
+
+      <!-- CIENCIAS ADMINISTRATIVAS -->
+      <li style="background:#444; font-weight:bold; margin-top:10px;">
+        Ciencias Administrativas
+      </li>
+      <li *ngFor="let materia of materiasAdministrativas"
+          (click)="seleccionarMateria(materia)"
+          style="cursor:pointer">
+        {{ materia.nombre }}
+      </li>
+
+      <!-- CARRERA -->
+      <li style="background:#444; font-weight:bold; margin-top:10px;">
+        Carrera
+      </li>
+      <li *ngFor="let materia of materiasCarrera"
+          (click)="seleccionarMateria(materia)"
+          style="cursor:pointer">
+        {{ materia.nombre }}
+      </li>
+
+    </ul>
+  </div>
+
+  <!-- CONTENIDO CENTRAL -->
+  <div class="contenido">
+
+    <div class="titulo">
+      <h2>Pantalla Principal</h2>
+    </div>
+
+    <div class="horario">
+      <p *ngIf="materiaSeleccionada">
+        Asesores de {{ materiaSeleccionada.nombre }}
+      </p>
+
+      <table *ngIf="asesores.length > 0">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let asesor of asesores"
+              (click)="seleccionarAsesor(asesor)"
+              style="cursor:pointer">
+            <td>{{ asesor.nombre }}</td>
+            <td>{{ asesor.Tipo }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="btn-solicitar">
+      Solicitar Asesoría
+    </button>
+
+  </div>
+
+  <!-- PANEL DERECHO -->
+  <div class="panel-derecho">
+
+    <div *ngIf="asesorSeleccionado">
+      <h3>Horarios</h3>
+
+      <ul>
+        <li *ngFor="let horario of horarios">
+          {{ horario.fecha }} - {{ horario.modalidad }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>

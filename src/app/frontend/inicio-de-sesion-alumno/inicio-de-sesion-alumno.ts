@@ -5,6 +5,7 @@ import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-inicio-de-sesion-alumno',
+  standalone: true,
   templateUrl: './inicio-de-sesion-alumno.html',
   styleUrls: ['./inicio-de-sesion-alumno.css'],
   imports: [RouterModule, FormsModule]
@@ -19,12 +20,18 @@ export class InicioDeSesionAlumnoComponent {
   submit() {
     this.authService.login({ usuario: this.username, password: this.password }).subscribe(
       (response: any) => {
-        if (response && response.usuario) {
-          // Redirigir al alumno a la página principal
+        console.log("Respuesta de login:", response);
+
+        if (response && response.success && response.usuario) {
+          console.log("Usuario a guardar:", response.usuario);
+          // Guardar usuario con toda la información
+          localStorage.setItem('usuario', JSON.stringify(response.usuario));
+          console.log("Usuario guardado en localStorage");
+
           this.router.navigate(['/pantalla-principal-alumno']);
         } else {
           alert('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
-          console.error('Credenciales incorrectas');
+          console.error('Credenciales incorrectas', response);
         }
       },
       (error: any) => {
@@ -33,4 +40,5 @@ export class InicioDeSesionAlumnoComponent {
       }
     );
   }
+  
 }
